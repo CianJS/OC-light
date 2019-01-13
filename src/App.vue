@@ -9,6 +9,7 @@
       <v-toolbar-items class="hidden-sm-and-down">
         <v-btn flat to="/">Home</v-btn>
         <v-btn flat to="/about">About</v-btn>
+        <v-btn flat to="/#">Login</v-btn>
       </v-toolbar-items>
     </v-toolbar>
 

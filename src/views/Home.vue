@@ -1,29 +1,35 @@
 <template>
   <div class="home">
-    <ul>
-      <users-list v-for="(user, index) in getAllUser" :key="index" :user="user"></users-list>
-    </ul>
+    <v-flex xs12>
+      <v-list two-line>
+        <comus-list v-for="(comu, index) in getComu"
+                    :key="index"
+                    :index="index"
+                    :comu="comu">
+        </comus-list>
+      </v-list>
+    </v-flex>
   </div>
 </template>
 
 <script>
-import { GET_ALL_USER } from '../graphql/graphql'
-import UsersList from '../components/UserList'
+import { GET_COMMUNITY } from '../graphql/graphql'
+import ComusList from '../components/ComusList'
 
 export default {
   name: 'home',
   data () {
     return {
-      getAllUser: [],
+      getComu: [],
       loading: 0
     }
   },
   components: {
-    UsersList
+    ComusList
   },
   apollo: {
-    getAllUser: {
-      query: GET_ALL_USER
+    getComu: {
+      query: GET_COMMUNITY
     }
   }
 }
