@@ -1,8 +1,10 @@
 <template>
-  <div class="community">
+  <div class="comult">
     <v-list-tile
       v-if="comu"
-      :key="comu.title">
+      :key="comu.title"
+      ripple
+      @click="letsCommunity(comu)">
       <v-list-tile-content>
         <v-list-tile-title>{{ comu.title }}</v-list-tile-title>
         <v-list-tile-sub-title>
@@ -17,10 +19,15 @@
 
 <script>
 export default {
-  name: 'community',
+  name: 'comult',
   props: {
     index: Number,
     comu: Object
+  },
+  methods: {
+    letsCommunity (comu) {
+      this.$router.push({ name: 'community', params: { comuId: comu.id, comu } })
+    }
   },
   created () {
     switch (this.comu.type) {

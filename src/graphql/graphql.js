@@ -13,6 +13,7 @@ export const GET_ALL_USER = gql`
 export const GET_COMMUNITY = gql`
   query GetComuQuery {
     getComu {
+      id
       title
       mainGenre
       smallGenre

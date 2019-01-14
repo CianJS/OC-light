@@ -15,6 +15,11 @@ export default new Router({
       path: '/about',
       name: 'about',
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+    },
+    {
+      path: '/comu/:comuId',
+      name: 'community',
+      component: () => import('./components/Community.vue')
     }
   ],
   mode: 'history'
