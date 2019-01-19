@@ -1,32 +1,22 @@
 <template>
   <v-app>
-    <v-toolbar app>
-      <v-toolbar-title class="headline text-uppercase">
-        <span>Test</span>
-        <span class="font-weight-light">Own-charater</span>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-toolbar-items class="hidden-sm-and-down">
-        <v-btn flat to="/">Home</v-btn>
-        <v-btn flat to="/about">About</v-btn>
-        <v-btn flat to="/#">Login</v-btn>
-      </v-toolbar-items>
-    </v-toolbar>
-
+    <Header></Header>
     <v-content>
-      <router-view/>
+      <router-view></router-view>
     </v-content>
+    <Footer></Footer>
   </v-app>
 </template>
 
 <script>
+import Header from './views/Header'
+import Footer from './views/Footer'
 
 export default {
   name: 'App',
-  data () {
-    return {
-      //
-    }
+  components: {
+    Header,
+    Footer
   }
 }
 </script>

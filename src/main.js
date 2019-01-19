@@ -5,6 +5,8 @@ import router from './router'
 import store from './store'
 import './registerServiceWorker'
 
+import Vuelidate from 'vuelidate'
+
 import VueApollo from 'vue-apollo'
 import { ApolloClient } from 'apollo-client'
 import { HttpLink } from 'apollo-link-http'
@@ -14,6 +16,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 Vue.config.productionTip = false
 
 Vue.use(VueApollo)
+Vue.use(Vuelidate)
 
 const httpLink = new HttpLink({
   uri: 'http://localhost:4000/'
@@ -32,9 +35,14 @@ const apolloProvider = new VueApollo({
   }
 })
 
+let authLogin = localStorage.getItem('GC_USER_NAME')
+
 new Vue({
   router,
   store,
+  data: {
+    authLogin
+  },
   apolloProvider,
   render: h => h(App)
 }).$mount('#app')

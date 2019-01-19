@@ -17,6 +17,16 @@ export default new Router({
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
     },
     {
+      path: '/login',
+      name: 'login',
+      component: () => import('./views/Login.vue')
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: () => import('./views/Register.vue')
+    },
+    {
       path: '/comu/:comuId',
       name: 'community',
       component: () => import('./components/Community.vue')
