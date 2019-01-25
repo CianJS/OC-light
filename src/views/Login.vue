@@ -19,9 +19,10 @@
           @input="$v.password.$touch()"
           @blur="$v.password.$touch()">
         </v-text-field>
-
         <v-btn @click="login">submit</v-btn>
       </form>
+
+      <Modal :detail-msg="detailMsg" :open-state="openState" @closeModal="modalStateChange"></Modal>
     </v-flex>
   </v-layout>
 </template>
@@ -31,14 +32,21 @@ import { LOGIN_USER } from '../graphql'
 import { validationMixin } from 'vuelidate'
 import { required, email, minLength } from 'vuelidate/lib/validators'
 
+import Modal from '../components/Modal'
+
 export default {
   mixins: [validationMixin],
   name: 'login',
   data () {
     return {
       email: '',
-      password: ''
+      password: '',
+      openState: false,
+      detailMsg: 'E-mail 또는 Password를 잘못입력하셨습니다.'
     }
+  },
+  components: {
+    Modal
   },
   validations: {
     email: {
@@ -76,12 +84,16 @@ export default {
             pw: this.password
           }
         }).then(res => {
+          console.log(res, 'res')
           this.saveAsName(res.data.loginUser.name)
           this.$router.push({ name: 'home' })
-        }).catch(err => {
-          alert('Error:', err)
+        }).catch(() => {
+          this.openState = !this.openState
         })
       }
+    },
+    modalStateChange () {
+      this.openState = !this.openState
     },
     saveAsName (name) {
       if (name) {
