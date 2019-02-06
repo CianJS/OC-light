@@ -13,7 +13,13 @@ export const GET_ALL_USER = gql`
 export const LOGIN_USER = gql`
   mutation LoginUser($email: String!, $pw: String!) {
     loginUser (email: $email, pw: $pw) {
-      name
+      user {
+        name
+      }
+      token {
+        accessToken
+        refreshToken
+      }
     }
   }
 `
@@ -36,6 +42,16 @@ export const ADD_USER = gql`
       name
       email
       pw
+    }
+  }
+`
+
+export const ReissuanceTokens = gql`
+  mutation ReissuanceToken($refreshToken: String!) {
+    reissuanceToken (refreshToken: $refreshToken) {
+      username
+      accessToken
+      refreshToken
     }
   }
 `

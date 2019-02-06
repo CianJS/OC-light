@@ -29,8 +29,10 @@
 
 <script>
 import { LOGIN_USER } from '../graphql'
+import { auth } from '../utils'
 import { validationMixin } from 'vuelidate'
 import { required, email, minLength } from 'vuelidate/lib/validators'
+import { hashString } from '@/utils'
 
 import Modal from '../components/Modal'
 
@@ -81,25 +83,25 @@ export default {
           mutation: LOGIN_USER,
           variables: {
             email: this.email,
-            pw: this.password
+            pw: hashString(this.password).digest
           }
         }).then(res => {
-          console.log(res, 'res')
-          this.saveAsName(res.data.loginUser.name)
-          this.$router.push({ name: 'home' })
-        }).catch(() => {
-          this.openState = !this.openState
+          const data = res.data.loginUser[0]
+          if (data) {
+            this.$router.push({ name: 'home' })
+            auth.setCookie(data.token)
+            this.$root.$data.authLogin = data.user.name
+          } else {
+            this.modalStateChange()
+          }
+        }).catch(e => {
+          console.log('Login FAIL: data is', e)
+          this.modalStateChange()
         })
       }
     },
     modalStateChange () {
       this.openState = !this.openState
-    },
-    saveAsName (name) {
-      if (name) {
-        localStorage.setItem('GC_USER_NAME', name)
-        this.$root.$data.authLogin = localStorage.getItem('GC_USER_NAME')
-      }
     }
   }
 }

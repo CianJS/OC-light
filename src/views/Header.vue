@@ -21,8 +21,16 @@
 </template>
 
 <script>
+import { auth } from '../utils'
+import { ReissuanceTokens } from '@/graphql'
+
 export default {
   name: 'mainHeader',
+  data () {
+    return {
+      authorized: false
+    }
+  },
   computed: {
     authAc () {
       return this.$root.$data.authLogin
@@ -30,8 +38,43 @@ export default {
   },
   methods: {
     logout () {
-      localStorage.removeItem('GC_USER_NAME')
-      this.$root.$data.authLogin = localStorage.getItem('GC_USER_NAME')
+      auth.logout()
+      this.$root.$data.authLogin = undefined
+    }
+  },
+  created () {
+    const token = auth.getCookie()
+    if (token) {
+      auth.checkToken(token)
+        .then(res => {
+          this.$root.$data.authLogin = res.username
+        })
+        .catch(err => {
+          const errMsg = err.message
+          const errResult = JSON.parse(errMsg)
+
+          // refreshToken expired.
+          if (errResult.refresh !== undefined) {
+            this.$router.push({ name: 'home' })
+            return
+          }
+
+          if (errResult.access !== undefined) {
+            this.$apollo.mutate({
+              mutation: ReissuanceTokens,
+              variables: {
+                refreshToken: errResult.access
+              }
+            }).then(res => {
+              const token = res.data.reissuanceToken
+
+              auth.setCookie({ accessToken: token.accessToken, refreshToken: token.refreshToken })
+              this.$root.$data.authLogin = token.username
+            }).catch(err => {
+              console.log('TCL: created -> err', err)
+            })
+          }
+        })
     }
   }
 }
