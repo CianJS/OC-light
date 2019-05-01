@@ -1,7 +1,7 @@
 <template class="login">
   <v-layout align-center justify-center row fill-height>
     <v-flex xs10>
-      <form>
+      <form @keyup.enter="login">
         <v-text-field
           v-model="$v.email.$model"
           :error-messages="emailErrors"
@@ -12,6 +12,7 @@
         </v-text-field>
 
         <v-text-field
+          type="password"
           v-model="$v.password.$model"
           :error-messages="passwordErrors"
           label="Password"
@@ -34,7 +35,7 @@ import { validationMixin } from 'vuelidate'
 import { required, email, minLength } from 'vuelidate/lib/validators'
 import { hashString } from '@/utils'
 
-import Modal from '../components/Modal'
+import { Modal } from '../components'
 
 export default {
   mixins: [validationMixin],
@@ -89,15 +90,18 @@ export default {
           const data = res.data.loginUser[0]
           if (data) {
             this.$router.push({ name: 'home' })
-            auth.setCookie(data.token)
-            this.$root.$data.authLogin = data.user.name
+            auth.setCookie(data)
+            this.$root.$data.authLogin = { userid: data.user.id, username: data.user.username }
           } else {
             this.modalStateChange()
           }
         }).catch(e => {
-          console.log('Login FAIL: data is', e)
+          console.log('Login FAIL:', e)
           this.modalStateChange()
         })
+      } else {
+        this.$v.email.$touch()
+        this.$v.password.$touch()
       }
     },
     modalStateChange () {

@@ -12,6 +12,8 @@
 import Header from './views/Header'
 import Footer from './views/Footer'
 
+import '@/assets/style.scss'
+
 export default {
   name: 'App',
   components: {

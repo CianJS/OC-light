@@ -30,6 +30,12 @@ export default new Router({
       path: '/comu/:comuId',
       name: 'community',
       component: () => import('./components/Community.vue')
+    },
+    {
+      path: '/users/:userId/:username',
+      name: 'user',
+      component: () => import('./components/User.vue'),
+      props: true
     }
   ],
   mode: 'history'

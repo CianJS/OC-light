@@ -1,12 +1,12 @@
 <template>
-  <v-footer class="bottom">
+  <v-footer
+    class="bottom"
+    height="56px"
+    color="rgba(204, 204, 153)">
     <v-flex
-      primary
-      lighten-2
-      py-3
       text-xs-center
-      white--text
-      xs12>
+      xs12
+      lighten-2>
       &copy;<strong>Erwinousy</strong> Own Community
     </v-flex>
   </v-footer>

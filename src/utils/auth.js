@@ -44,23 +44,37 @@ const checkToken = async (userToken) => {
   }
 }
 
-const getCookie = () => {
+const getUserCookie = () => {
+  return Cookies.get(JSON_COOKIE.userInfo)
+}
+
+const getTokenCookie = () => {
   return Cookies.get(JSON_COOKIE.token)
 }
 
 const setCookie = (data) => {
   if (data) {
-    Cookies.set(JSON_COOKIE.token, data, { expires: 7 })
+    const token = data.token
+    const user = data.user
+
+    if (token) {
+      Cookies.set(JSON_COOKIE.token, token, { expires: 7 })
+    }
+    if (user) {
+      Cookies.set(JSON_COOKIE.userInfo, user, { expires: 7 })
+    }
   }
 }
 
 const logout = () => {
   Cookies.remove(JSON_COOKIE.token, { expires: 7 })
+  Cookies.remove(JSON_COOKIE.userInfo, { expires: 7 })
 }
 
 export default {
   checkToken,
-  getCookie,
+  getUserCookie,
+  getTokenCookie,
   setCookie,
   logout
 }

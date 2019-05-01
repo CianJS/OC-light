@@ -1,13 +1,14 @@
 <template>
   <div class="home">
+    <Carousel></Carousel>
     <v-flex xs12>
       <v-list two-line>
-        <comus-list
+        <comu-lists
           v-for="(comu, index) in getComu"
           :key="index"
           :index="index"
           :comu="comu">
-        </comus-list>
+        </comu-lists>
       </v-list>
     </v-flex>
   </div>
@@ -15,7 +16,7 @@
 
 <script>
 import { GET_COMMUNITY } from '../graphql'
-import ComusList from '../components/ComusList'
+import { Carousel, ComuLists } from '../components'
 
 export default {
   name: 'home',
@@ -26,7 +27,8 @@ export default {
     }
   },
   components: {
-    ComusList
+    ComuLists,
+    Carousel
   },
   apollo: {
     getComu: {
